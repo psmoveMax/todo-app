@@ -17,6 +17,8 @@
         input.classList.add('form-control');
         input.placeholder = 'Введите название нового дела';
         button.classList.add('btn', 'btn-primary');
+        button.disabled = true;
+        console.log(button);
         button.textContent = 'Добавить дело';
 
         buttonWrapper.append(button);
@@ -31,7 +33,7 @@
     }
 
 
-    function createTodoItem(name) {
+    function createTodoItem(obj,id_number) {
         let item = document.createElement('li');
 
         // кнопки помещаем в элемент, который в одной группе
@@ -42,8 +44,8 @@
 
         //устанавливаем стили для элемента списка, а также для размещения кнопок в его правой части с помощью флекс
         item.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
-        item.textContent = name;
-
+        item.textContent = obj.name;
+        item.setAttribute('id',id_number );
         buttonGroup.classList.add('btn-group', 'btn-group-sm');
         doneButton.classList.add('btn','btn-success');
         doneButton.textContent = 'Готово';
@@ -85,18 +87,62 @@
         container.append(todoList);
 
 
+        let button = document.getElementsByClassName('btn');
+        
+        let id_number = 0;
+        let obj = [];
+
+        todoItemForm.form.addEventListener('input', function(e) {
+
+            e.preventDefault();
+
+            if (!todoItemForm.input.value) {
+                button[0].disabled = true;
+            }else{
+                button[0].disabled = false;
+            }
+           
+
+    
+
+        });
+
+
+        
+
         //браузер создает событие submit на форме по нажатию Enter или на кнопку создания дела
         todoItemForm.form.addEventListener('submit', function(e) {
             // эта строчка необходима, чтобы предотвратить действия браузера
             // в данном случае мы не хотим, чтобы страница перезагружалась при отправке формы
             e.preventDefault();
 
+
             // игнорируем создание элемента, если пользователь ничего не ввел в поле
             if (!todoItemForm.input.value) {
                 return;
-            }
+            }   
 
-            let todoItem = createTodoItem(todoItemForm.input.value);
+
+            console.log('Всего было: '+id_number);
+
+  
+
+
+
+
+             obj[id_number] = {
+                "id": id_number,
+                "name": todoItemForm.input.value,
+                "done": false
+            };
+
+
+            let todoItem = createTodoItem(obj[id_number],id_number);
+
+            id_number = id_number + 1;
+            console.log(id_number);
+            console.log(obj);
+
 
             //добавляем обработчики на кнопки
             todoItem.doneButton.addEventListener('click', function(){
@@ -106,8 +152,11 @@
             todoItem.deleteButton.addEventListener('click', function(){
                 if (confirm('Вы уверены?')) {
                     todoItem.item.remove();
+                    console.log(todoItem.item);     
+                    delete obj[todoItem.item.id];
                 }
             });
+            console.log(todoItem.item.id);     
 
             //создаем и добавляем в список дел новое дело с названием из поля для ввода
             todoList.append(todoItem.item);
