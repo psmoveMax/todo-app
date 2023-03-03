@@ -108,13 +108,43 @@
       console.log("new");
     } else {
       var obj = JSON.parse(window.localStorage[listName]);
-      //   console.log(obj);
-      // obj = Object.entries(obj);
-
-      // obj = obj.filter(Boolean);
 
       for (let i = 0; i < obj.length; i++) {
+
         let todoItem = createTodoItem(obj[i], obj[i].id);
+
+                //добавляем обработчики на кнопки
+        todoItem.doneButton.addEventListener("click", function () {
+          todoItem.item.classList.toggle("list-group-item-success");
+
+
+          if (todoItem.item.classList.contains("list-group-item-success")) {
+            obj[i].done = true;
+          } else {
+            obj[i].done = false;
+          }
+
+          localStorage.setItem(listName, JSON.stringify(obj));
+        });
+
+        todoItem.deleteButton.addEventListener("click", function () {
+          if (confirm("Вы уверены?")) {
+            todoItem.item.remove();
+
+            var indexObj;
+            for(var i = 0; i < obj.length; i++) {
+              if(obj[i].id == todoItem.item.id) {
+                indexObj = i;
+                break;
+              }
+            }
+            obj.splice(indexObj, 1);
+            localStorage.setItem(listName, JSON.stringify(obj));
+          }
+
+
+          localStorage.setItem(listName, JSON.stringify(obj));
+        });
         todoList.append(todoItem.item);
       }
     }
@@ -156,8 +186,7 @@
       //добавляем обработчики на кнопки
       todoItem.doneButton.addEventListener("click", function () {
         todoItem.item.classList.toggle("list-group-item-success");
-        let id_item = todoItem.item.id;
-        let index_item = obj.indexOf(id_item);
+
 
         if (todoItem.item.classList.contains("list-group-item-success")) {
           obj[length_obj].done = true;
@@ -171,24 +200,18 @@
       todoItem.deleteButton.addEventListener("click", function () {
         if (confirm("Вы уверены?")) {
           todoItem.item.remove();
-          console.log(todoItem.item);
-          let obj2 = Object.entries(obj);
-          console.log(typeof obj2);
-          //поиск элемента массива по ID
-          for (let i = 0; i < obj2.length; i++) {
-            var indexObj = obj2[i].indexOf(todoItem.item.id);
-            if (indexObj != -1) {
+
+          var indexObj;
+          for(var i = 0; i < obj.length; i++) {
+            if(obj[i].id == todoItem.item.id) {
+              indexObj = i;
               break;
             }
           }
-          console.log("e3");
-          console.log(indexObj);
-          delete obj[indexObj];
+          obj.splice(indexObj, 1);
+          localStorage.setItem(listName, JSON.stringify(obj));
         }
-        console.log("prov");
-        console.log(localStorage.getItem(listName));
-        console.log(obj);
-        console.log("prov");
+
 
         localStorage.setItem(listName, JSON.stringify(obj));
       });
