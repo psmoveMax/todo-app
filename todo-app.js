@@ -113,7 +113,7 @@
 
         let todoItem = createTodoItem(obj[i], obj[i].id);
 
-                //добавляем обработчики на кнопки
+        //добавляем обработчики на кнопки
         todoItem.doneButton.addEventListener("click", function () {
           todoItem.item.classList.toggle("list-group-item-success");
 
@@ -132,8 +132,8 @@
             todoItem.item.remove();
 
             var indexObj;
-            for(var i = 0; i < obj.length; i++) {
-              if(obj[i].id == todoItem.item.id) {
+            for (var i = 0; i < obj.length; i++) {
+              if (obj[i].id == todoItem.item.id) {
                 indexObj = i;
                 break;
               }
@@ -202,8 +202,8 @@
           todoItem.item.remove();
 
           var indexObj;
-          for(var i = 0; i < obj.length; i++) {
-            if(obj[i].id == todoItem.item.id) {
+          for (var i = 0; i < obj.length; i++) {
+            if (obj[i].id == todoItem.item.id) {
               indexObj = i;
               break;
             }
