@@ -1,26 +1,81 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="shortcut icon" href="https://zenkit.com/wp-content/uploads/2021/01/zenkit-todo-favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <script src="lib/FileSaver.js"></script>
+
     <script defer src="todo-app.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            createTodoApp(document.getElementById('todo-app'), 'Мои дела','my');
+        document.addEventListener('DOMContentLoaded', function () {
+            createTodoApp(document.getElementById('todo-app'), 'Задачи', 'my');
         });
     </script>
+
+    <script>
+
+        function saveStaticDataToFile() {
+            let export_bd = localStorage.getItem("my");
+            let blob = new Blob([export_bd],
+                { type: "text/plain;charset=utf-8" });
+            saveAs(blob, "bd.txt");
+        }
+
+        function importStorageFromFile() {
+
+            localStorage.setItem("my", JSON.stringify(originalVarname));
+        }
+    </script>
+    <script>
+        function readFile(input) {
+            let file = input.files[0];
+
+            let reader = new FileReader();
+
+            reader.readAsText(file);
+
+            reader.onload = function () {
+                localStorage.setItem("my", reader.result);
+                location.reload();
+            };
+
+            reader.onerror = function () {
+                console.log(reader.error);
+            };
+
+        }
+    </script>
+
+
     <title>Todoist</title>
 </head>
+
 <body>
     <div class="container mb-5">
         <nav class="nav">
-            <a href="index.html" class="nav-link">Мои дела</a>
+            <!--  <a href="index.html" class="nav-link">Мои дела</a>
             <a href="dad.html" class="nav-link">Дела папы</a>
-            <a href="mom.html" class="nav-link">Дела мамы</a>
+            <a href="mom.html" class="nav-link">Дела мамы</a> -->
+            <button type="button" class="btn_origin btn-header " id="btn_clear_bd">Очистка хранилища</button>
+            <button type="button" class="btn_origin btn-header " onclick="saveStaticDataToFile();"
+                id="btn_export">Экспорт</button>
+
+            <label class="input-file">
+                <input type="file" onchange="readFile(this)">
+                <span class="btn_origin btn-header">Импорт</span>
+            </label>
         </nav>
     </div>
     <div id="todo-app" class="container"></div>
 </body>
+<footer class="footer">
+    0.6 <a target="_blank" href="https://github.com/psmoveMax/todo-app">GitHub</a>
+</footer>
+
 </html>

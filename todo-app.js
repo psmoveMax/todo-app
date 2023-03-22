@@ -1,4 +1,15 @@
 (function () {
+
+
+  document.querySelector('#btn_clear_bd').addEventListener("click", function () {
+    if (confirm("Вы уверены очистить список дел?")) {
+      localStorage.clear();
+      location.reload();
+    }
+  });
+
+
+
   // случайное число от min до (max+1)
   function randomInteger(min, max) {
     let rand = min + Math.random() * (max + 1 - min);
@@ -21,11 +32,11 @@
 
     form.classList.add("input-group", "mb-3");
     input.classList.add("form-control");
-    input.placeholder = "Введите название нового дела";
+    input.placeholder = "Введите название задачи";
     button.classList.add("btn", "btn-primary");
     button.disabled = true;
 
-    button.textContent = "Добавить дело";
+    button.textContent = "Добавить";
 
     buttonWrapper.append(button);
     form.append(input);
